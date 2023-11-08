@@ -9,10 +9,8 @@ $LogYear = (Get-date).Year
 $LogTimeHours = (Get-Date).TimeOfDay.Hours
 $LogTimeMinutes = (Get-Date).Timeofday.Minutes
 
-$LogDate = "$LogDay$LogMonth$LogYear"
-$LogTime = "$LogTimeHours$LogTimeMinutes"
-$LogTitle = "ProfileCleanup-$LogDate-$LogTime"
+$LogTitle = get-date -format yyyymmdd-hhmm
 
 $DateCheck = (Get-Date).AddMonths(-1)
-write-host $DateCheck
-get-childitem -path $w7ProfilePath | ? {$_.CreationTime -lt (get-date).AddMonths(-1)} | remove-item -recurse -force -ErrorAction SilentlyContinue -verbose 4>"$LogTitle.txt"
+write-verbose $DateCheck
+get-childitem -path $w7ProfilePath | ? {$_.CreationTime -lt (get-date).AddMonths(-1)} | remove-item -recurse -force -ErrorAction SilentlyContinue -verbose | set-content "$logtitle-ProfileCleanup.txt"
